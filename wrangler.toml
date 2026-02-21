@@ -1,4 +1,4 @@
-name = "graysens-portfolio"
+name = "portfolio"
 compatibility_date = "2025-02-21"
 [assets]
 directory = "./source"
