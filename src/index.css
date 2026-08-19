@@ -19,7 +19,7 @@ html, body, #root {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.6;
 }
 
@@ -107,6 +107,12 @@ a:hover {
   color: var(--error);
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
+}
+
+.tab-matches {
+  color: var(--accent);
+  margin-top: 0.1rem;
+  margin-bottom: 0.25rem;
 }
 
 /* Output blocks */
@@ -211,6 +217,30 @@ a:hover {
   font-size: 0.875rem;
   color: var(--dim);
   margin-top: 0.5rem;
+}
+
+/* NVIDIA easter egg */
+.nvidia-block {
+  border-left-color: #76b900;
+}
+
+.nvidia-logo {
+  color: #76b900;
+  font-family: var(--font);
+  font-size: 0.7rem;
+  line-height: 1.2;
+  overflow-x: auto;
+}
+
+.nvidia-text {
+  margin-top: 0.75rem;
+}
+
+.nvidia-sub {
+  color: #76b900;
+  opacity: 0.7;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
 }
 
 /* Mobile */

@@ -5,6 +5,7 @@ import Experience from './commands/experience.jsx'
 import Skills from './commands/skills.jsx'
 import Projects from './commands/projects.jsx'
 import Activities from './commands/activities.jsx'
+import Nvidia from './commands/nvidia.jsx'
 import { contact } from './content.js'
 
 const COMMANDS = {
@@ -14,9 +15,10 @@ const COMMANDS = {
   skills: <Skills />,
   projects: <Projects />,
   activities: <Activities />,
+  nvidia: <Nvidia />,
 }
 
-const PROMPT = 'λ :: ~ >> '
+const PROMPT = '[graysen@portfolio ~]$ '
 
 const startup = [
   { type: 'banner', content: null },
@@ -80,7 +82,21 @@ export default function Terminal() {
   }
 
   function handleKeyDown(e) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Tab') {
+      e.preventDefault()
+      const partial = inputValue.trim().toLowerCase()
+      if (!partial) return
+      const matches = Object.keys(COMMANDS).filter(c => c.startsWith(partial))
+      if (matches.length === 1) {
+        setInputValue(matches[0])
+      } else if (matches.length > 1) {
+        setHistory(prev => [
+          ...prev,
+          { type: 'input', content: inputValue },
+          { type: 'tab-matches', content: matches },
+        ])
+      }
+    } else if (e.key === 'Enter') {
       runCommand(inputValue)
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
@@ -106,7 +122,7 @@ export default function Terminal() {
         if (entry.type === 'banner') {
           return (
             <div key={i} className="banner">
-              <div className="banner-name">graysen@portfolio:~$</div>
+              <div className="banner-name">[graysen@portfolio ~]$</div>
               <div className="banner-contact">
                 <a href={`mailto:${contact.email}`} className="contact-link">{contact.email}</a>
                 <span className="dim"> · </span>
@@ -125,6 +141,13 @@ export default function Terminal() {
             <div key={i} className="history-input">
               <span className="prompt">{PROMPT}</span>
               <span>{entry.content}</span>
+            </div>
+          )
+        }
+        if (entry.type === 'tab-matches') {
+          return (
+            <div key={i} className="tab-matches">
+              {entry.content.join('    ')}
             </div>
           )
         }

@@ -41,7 +41,6 @@ export const experience = [
       'Optimized RaiderSTREAM benchmark initialization, reducing overall benchmark startup time by over 50%',
       'Integrated UCC collectives into OpenSHMEM, improving alltoall throughput by 5x compared to internal collectives',
       'Improved OpenSHMEM benchmark implementation, adding features such as warm up routines to enhance test accuracy',
-      'Wrote high performance OpenSHMEM 1.6 reference collectives, working with the UCX API to optimize performance',
     ],
   },
   {
@@ -53,7 +52,6 @@ export const experience = [
       'Saved 10+ hours per deployment cycle of the Municipal Payment Platform through an automated health-check system',
       'Designed a backend with AWS Lambda and API Gateway, lowering costs 80% over microservices',
       'Reduced project deployment time by 90% using automated CI/CD pipelines with GitHub Actions and Terraform',
-      'Authored optimized SQL queries with ADO.NET across 8+ production database tables serving millions of users',
       'Enhanced API scalability and response speed by 50% via database query caching using serverless Memcached',
     ],
   },
