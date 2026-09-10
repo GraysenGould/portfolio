@@ -36,8 +36,8 @@ a:hover {
 /* Terminal container */
 .terminal {
   min-height: 100%;
-  max-width: 860px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding: 2rem 1.5rem 4rem;
   cursor: text;
 }
@@ -217,6 +217,46 @@ a:hover {
   font-size: 0.875rem;
   color: var(--dim);
   margin-top: 0.5rem;
+}
+
+/* Welcome banner */
+.welcome-block {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 300px;
+  overflow-x: auto;
+}
+
+.welcome-name {
+  color: var(--accent);
+  font-family: var(--font);
+  font-size: 0.65rem;
+  line-height: 1.2;
+  text-align: left;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.welcome-photo {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .welcome-name {
+    font-size: 0.32rem;
+  }
+
+  .welcome-photo {
+    width: 160px;
+    height: 160px;
+  }
 }
 
 /* NVIDIA easter egg */
