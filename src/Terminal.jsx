@@ -1,33 +1,56 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Help from './commands/help.jsx'
-import Education from './commands/education.jsx'
+import About from './commands/about.jsx'
+import Contact from './commands/contact.jsx'
+import News from './commands/news.jsx'
 import Experience from './commands/experience.jsx'
+import Education from './commands/education.jsx'
+import Research from './commands/research.jsx'
 import Skills from './commands/skills.jsx'
 import Projects from './commands/projects.jsx'
 import Activities from './commands/activities.jsx'
+import Personal from './commands/personal.jsx'
 import Nvidia from './commands/nvidia.jsx'
 import Welcome from './commands/welcome.jsx'
-import { contact } from './content.js'
 
 const COMMANDS = {
   help: <Help />,
-  education: <Education />,
-  experience: <Experience />,
-  skills: <Skills />,
-  projects: <Projects />,
-  activities: <Activities />,
-  nvidia: <Nvidia />,
   welcome: <Welcome />,
+  about: <About />,
+  contact: <Contact />,
+  news: <News />,
+  work: <Experience />,
+  education: <Education />,
+  research: <Research />,
+  projects: <Projects />,
+  skills: <Skills />,
+  misc: <Activities />,
+  personal: <Personal />,
+  nvidia: <Nvidia />,
 }
 
-const PROMPT = '[graysen@portfolio ~]$ '
-const BOOT_COMMAND = 'welcome'
+const PROMPT_USER = 'visitor'
+const PROMPT_HOST = 'graysens-portfolio'
+const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal']
+
+function Prompt() {
+  return (
+    <span className="prompt">
+      <span className="prompt-user">{PROMPT_USER}</span>
+      <span className="prompt-punct">@</span>
+      <span className="prompt-host">{PROMPT_HOST}</span>
+      <span className="prompt-punct">:~$ </span>
+    </span>
+  )
+}
 
 const startup = [
-  { type: 'banner', content: null },
-  { type: 'input', content: BOOT_COMMAND },
-  { type: 'output', content: COMMANDS[BOOT_COMMAND] },
-  { type: 'hint', content: 'type help to start' },
+  ...STARTUP_COMMANDS.flatMap(cmd => [
+    { type: 'input', content: cmd },
+    { type: 'output', content: COMMANDS[cmd] },
+    { type: 'rule' },
+  ]),
+  { type: 'hint', content: null },
 ]
 
 export default function Terminal() {
@@ -37,10 +60,12 @@ export default function Terminal() {
   const [historyIndex, setHistoryIndex] = useState(-1)
   const inputRef = useRef(null)
   const bottomRef = useRef(null)
+  const [scrollTick, setScrollTick] = useState(0)
 
   useEffect(() => {
+    if (scrollTick === 0) return
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [history])
+  }, [scrollTick])
 
   const focusInput = useCallback(() => {
     inputRef.current?.focus()
@@ -48,7 +73,6 @@ export default function Terminal() {
 
   useEffect(() => {
     document.addEventListener('keydown', focusInput)
-    focusInput()
     return () => document.removeEventListener('keydown', focusInput)
   }, [focusInput])
 
@@ -57,10 +81,11 @@ export default function Terminal() {
     const inputEntry = { type: 'input', content: cmd }
 
     if (cmd === 'clear') {
-      setHistory(startup)
+      setHistory([])
       setCmdHistory(prev => [raw, ...prev])
       setHistoryIndex(-1)
       setInputValue('')
+      setScrollTick(t => t + 1)
       return
     }
 
@@ -70,20 +95,19 @@ export default function Terminal() {
     } else if (COMMANDS[cmd]) {
       outputEntry = { type: 'output', content: COMMANDS[cmd] }
     } else {
-      outputEntry = {
-        type: 'error',
-        content: `command not found: ${cmd}. Try 'help'.`,
-      }
+      outputEntry = { type: 'error', content: cmd }
     }
 
     setHistory(prev => [
       ...prev,
+      { type: 'rule' },
       inputEntry,
       ...(outputEntry ? [outputEntry] : []),
     ])
     setCmdHistory(prev => [raw, ...prev])
     setHistoryIndex(-1)
     setInputValue('')
+    setScrollTick(t => t + 1)
   }
 
   function handleKeyDown(e) {
@@ -100,6 +124,7 @@ export default function Terminal() {
           { type: 'input', content: inputValue },
           { type: 'tab-matches', content: matches },
         ])
+        setScrollTick(t => t + 1)
       }
     } else if (e.key === 'Enter') {
       runCommand(inputValue)
@@ -124,27 +149,20 @@ export default function Terminal() {
   return (
     <div className="terminal" onClick={focusInput}>
       {history.map((entry, i) => {
-        if (entry.type === 'banner') {
-          return (
-            <div key={i} className="banner">
-              <div className="banner-name">[graysen@portfolio ~]$</div>
-              <div className="banner-contact">
-                <a href={`mailto:${contact.email}`} className="contact-link">{contact.email}</a>
-                <span className="dim"> · </span>
-                <a href={`https://${contact.linkedin}`} target="_blank" rel="noreferrer" className="contact-link">{contact.linkedin}</a>
-                <span className="dim"> · </span>
-                <a href={`https://${contact.github}`} target="_blank" rel="noreferrer" className="contact-link">{contact.github}</a>
-              </div>
-            </div>
-          )
+        if (entry.type === 'rule') {
+          return <div key={i} className="rule" />
         }
         if (entry.type === 'hint') {
-          return <div key={i} className="hint">{entry.content}</div>
+          return (
+            <div key={i} className="hint">
+              for a list of available commands, type <span className="accent">help</span>.
+            </div>
+          )
         }
         if (entry.type === 'input') {
           return (
             <div key={i} className="history-input">
-              <span className="prompt">{PROMPT}</span>
+              <Prompt />
               <span>{entry.content}</span>
             </div>
           )
@@ -157,7 +175,11 @@ export default function Terminal() {
           )
         }
         if (entry.type === 'error') {
-          return <div key={i} className="error-line">{entry.content}</div>
+          return (
+            <div key={i} className="error-line">
+              command not found: <span className="accent">{entry.content}</span>. try <span className="accent">help</span>.
+            </div>
+          )
         }
         if (entry.type === 'output') {
           return <div key={i}>{entry.content}</div>
@@ -166,10 +188,12 @@ export default function Terminal() {
       })}
 
       <div className="input-line">
-        <span className="prompt">{PROMPT}</span>
+        <Prompt />
+        <span className="typed-text">{inputValue}</span>
+        <span className="cursor-block" aria-hidden="true">▌</span>
         <input
           ref={inputRef}
-          className="terminal-input"
+          className="terminal-input-hidden"
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
