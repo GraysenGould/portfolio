@@ -6,6 +6,7 @@ import Skills from './commands/skills.jsx'
 import Projects from './commands/projects.jsx'
 import Activities from './commands/activities.jsx'
 import Nvidia from './commands/nvidia.jsx'
+import Welcome from './commands/welcome.jsx'
 import { contact } from './content.js'
 
 const COMMANDS = {
@@ -16,12 +17,16 @@ const COMMANDS = {
   projects: <Projects />,
   activities: <Activities />,
   nvidia: <Nvidia />,
+  welcome: <Welcome />,
 }
 
 const PROMPT = '[graysen@portfolio ~]$ '
+const BOOT_COMMAND = 'welcome'
 
 const startup = [
   { type: 'banner', content: null },
+  { type: 'input', content: BOOT_COMMAND },
+  { type: 'output', content: COMMANDS[BOOT_COMMAND] },
   { type: 'hint', content: 'type help to start' },
 ]
 
