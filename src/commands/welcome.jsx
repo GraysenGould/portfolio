@@ -44,6 +44,9 @@ export default function Welcome() {
             <span><span className="accent">github:</span> <a href={`https://${contact.github}`} target="_blank" rel="noreferrer" className="contact-link">{contact.github}</a></span>
           </div>
         </div>
+        <div className="hint">
+          for a list of available commands, type <span className="accent">help</span>.
+        </div>
       </div>
       <img src={headshot} alt="Graysen Gould" className="welcome-photo" />
     </div>
