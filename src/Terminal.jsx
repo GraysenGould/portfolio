@@ -3,6 +3,7 @@ import Help from './commands/help.jsx'
 import About from './commands/about.jsx'
 import News from './commands/news.jsx'
 import Experience from './commands/experience.jsx'
+import Education from './commands/education.jsx'
 import Research from './commands/research.jsx'
 import Skills from './commands/skills.jsx'
 import Projects from './commands/projects.jsx'
@@ -18,6 +19,7 @@ const COMMANDS = {
   about: <About />,
   news: <News />,
   work: <Experience />,
+  education: <Education />,
   research: <Research />,
   projects: <Projects />,
   skills: <Skills />,
@@ -28,7 +30,7 @@ const COMMANDS = {
 
 const PROMPT_USER = 'visitor'
 const PROMPT_HOST = 'graysens-portfolio'
-const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'research', 'projects', 'skills', 'misc', 'personal']
+const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal']
 
 function Prompt() {
   return (

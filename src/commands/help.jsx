@@ -2,6 +2,7 @@ const commands = [
   ['about', 'About Me'],
   ['news', 'Latest Updates'],
   ['work', 'Work Experience'],
+  ['education', 'My Education'],
   ['research', 'Research'],
   ['projects', 'My Projects'],
   ['skills', 'Technical Skills'],
