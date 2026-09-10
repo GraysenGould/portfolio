@@ -289,6 +289,14 @@ a:hover {
   color: var(--white);
 }
 
+.mint-text {
+  color: var(--mint);
+}
+
+.amber-text {
+  color: var(--amber);
+}
+
 .placeholder-text {
   color: var(--punct);
   margin-bottom: 1rem;
@@ -299,6 +307,7 @@ a:hover {
 }
 
 .about-text {
+  color: var(--white);
   max-width: 50%;
 }
 
