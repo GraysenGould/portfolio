@@ -203,6 +203,15 @@ a:hover {
   color: var(--mint);
 }
 
+.placeholder-text {
+  color: var(--punct);
+  margin-bottom: 1rem;
+}
+
+.placeholder-text:last-child {
+  margin-bottom: 0;
+}
+
 .accent::before,
 .accent::after {
   content: '`';

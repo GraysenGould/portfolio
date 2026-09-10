@@ -1,28 +1,34 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Help from './commands/help.jsx'
-import Education from './commands/education.jsx'
+import About from './commands/about.jsx'
+import News from './commands/news.jsx'
 import Experience from './commands/experience.jsx'
+import Research from './commands/research.jsx'
 import Skills from './commands/skills.jsx'
 import Projects from './commands/projects.jsx'
 import Activities from './commands/activities.jsx'
+import Personal from './commands/personal.jsx'
 import Nvidia from './commands/nvidia.jsx'
 import Welcome from './commands/welcome.jsx'
 import { contact } from './content.js'
 
 const COMMANDS = {
   help: <Help />,
-  education: <Education />,
-  experience: <Experience />,
-  skills: <Skills />,
-  projects: <Projects />,
-  activities: <Activities />,
-  nvidia: <Nvidia />,
   welcome: <Welcome />,
+  about: <About />,
+  news: <News />,
+  work: <Experience />,
+  research: <Research />,
+  projects: <Projects />,
+  skills: <Skills />,
+  misc: <Activities />,
+  personal: <Personal />,
+  nvidia: <Nvidia />,
 }
 
 const PROMPT_USER = 'visitor'
 const PROMPT_HOST = 'graysens-portfolio'
-const BOOT_COMMAND = 'welcome'
+const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'research', 'projects', 'skills', 'misc', 'personal']
 
 function Prompt() {
   return (
@@ -37,8 +43,10 @@ function Prompt() {
 
 const startup = [
   { type: 'banner', content: null },
-  { type: 'input', content: BOOT_COMMAND },
-  { type: 'output', content: COMMANDS[BOOT_COMMAND] },
+  ...STARTUP_COMMANDS.flatMap(cmd => [
+    { type: 'input', content: cmd },
+    { type: 'output', content: COMMANDS[cmd] },
+  ]),
   { type: 'hint', content: null },
 ]
 
@@ -49,10 +57,12 @@ export default function Terminal() {
   const [historyIndex, setHistoryIndex] = useState(-1)
   const inputRef = useRef(null)
   const bottomRef = useRef(null)
+  const [scrollTick, setScrollTick] = useState(0)
 
   useEffect(() => {
+    if (scrollTick === 0) return
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [history])
+  }, [scrollTick])
 
   const focusInput = useCallback(() => {
     inputRef.current?.focus()
@@ -60,7 +70,6 @@ export default function Terminal() {
 
   useEffect(() => {
     document.addEventListener('keydown', focusInput)
-    focusInput()
     return () => document.removeEventListener('keydown', focusInput)
   }, [focusInput])
 
@@ -69,10 +78,11 @@ export default function Terminal() {
     const inputEntry = { type: 'input', content: cmd }
 
     if (cmd === 'clear') {
-      setHistory(startup)
+      setHistory([])
       setCmdHistory(prev => [raw, ...prev])
       setHistoryIndex(-1)
       setInputValue('')
+      setScrollTick(t => t + 1)
       return
     }
 
@@ -93,6 +103,7 @@ export default function Terminal() {
     setCmdHistory(prev => [raw, ...prev])
     setHistoryIndex(-1)
     setInputValue('')
+    setScrollTick(t => t + 1)
   }
 
   function handleKeyDown(e) {
@@ -109,6 +120,7 @@ export default function Terminal() {
           { type: 'input', content: inputValue },
           { type: 'tab-matches', content: matches },
         ])
+        setScrollTick(t => t + 1)
       }
     } else if (e.key === 'Enter') {
       runCommand(inputValue)

@@ -1,9 +1,12 @@
 const commands = [
-  ['education', 'My Education'],
-  ['experience', 'Work Experience'],
-  ['skills', 'Technical Skills'],
+  ['about', 'About Me'],
+  ['news', 'Latest Updates'],
+  ['work', 'Work Experience'],
+  ['research', 'Research'],
   ['projects', 'My Projects'],
-  ['activities', 'Leadership & Competitions'],
+  ['skills', 'Technical Skills'],
+  ['misc', 'Leadership & Competitions'],
+  ['personal', 'Personal'],
   ['clear', 'Clear terminal'],
 ]
 
