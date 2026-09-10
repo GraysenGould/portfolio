@@ -12,6 +12,7 @@ import Activities from './commands/activities.jsx'
 import Personal from './commands/personal.jsx'
 import Nvidia from './commands/nvidia.jsx'
 import Welcome from './commands/welcome.jsx'
+import NavBar from './NavBar.jsx'
 
 const COMMANDS = {
   help: <Help />,
@@ -31,7 +32,7 @@ const COMMANDS = {
 
 const PROMPT_USER = 'visitor'
 const PROMPT_HOST = 'graysens-portfolio'
-const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal']
+const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal', 'help']
 
 function Prompt() {
   return (
@@ -44,14 +45,11 @@ function Prompt() {
   )
 }
 
-const startup = [
-  ...STARTUP_COMMANDS.flatMap(cmd => [
-    { type: 'input', content: cmd },
-    { type: 'output', content: COMMANDS[cmd] },
-    { type: 'rule' },
-  ]),
-  { type: 'hint', content: null },
-]
+const startup = STARTUP_COMMANDS.flatMap(cmd => [
+  { type: 'input', content: cmd },
+  { type: 'output', content: COMMANDS[cmd] },
+  { type: 'rule' },
+])
 
 export default function Terminal() {
   const [history, setHistory] = useState(startup)
@@ -61,6 +59,7 @@ export default function Terminal() {
   const inputRef = useRef(null)
   const bottomRef = useRef(null)
   const [scrollTick, setScrollTick] = useState(0)
+  const [navBusy, setNavBusy] = useState(false)
 
   useEffect(() => {
     if (scrollTick === 0) return
@@ -110,6 +109,24 @@ export default function Terminal() {
     setScrollTick(t => t + 1)
   }
 
+  function navigate(section) {
+    if (navBusy) return
+    setNavBusy(true)
+    focusInput()
+    let i = 0
+    const typeTimer = setInterval(() => {
+      i += 1
+      setInputValue(section.slice(0, i))
+      if (i >= section.length) {
+        clearInterval(typeTimer)
+        setTimeout(() => {
+          runCommand(section)
+          setNavBusy(false)
+        }, 200)
+      }
+    }, 45)
+  }
+
   function handleKeyDown(e) {
     if (e.key === 'Tab') {
       e.preventDefault()
@@ -147,17 +164,12 @@ export default function Terminal() {
   }
 
   return (
-    <div className="terminal" onClick={focusInput}>
+    <>
+      <NavBar onSelect={navigate} disabled={navBusy} />
+      <div className="terminal" onClick={focusInput}>
       {history.map((entry, i) => {
         if (entry.type === 'rule') {
           return <div key={i} className="rule" />
-        }
-        if (entry.type === 'hint') {
-          return (
-            <div key={i} className="hint">
-              for a list of available commands, type <span className="accent">help</span>.
-            </div>
-          )
         }
         if (entry.type === 'input') {
           return (
@@ -197,6 +209,7 @@ export default function Terminal() {
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
+          readOnly={navBusy}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
@@ -204,6 +217,7 @@ export default function Terminal() {
         />
       </div>
       <div ref={bottomRef} />
-    </div>
+      </div>
+    </>
   )
 }
