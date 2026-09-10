@@ -1,5 +1,6 @@
 const commands = [
   ['about', 'About Me'],
+  ['contact', 'Contact & Socials'],
   ['news', 'Latest Updates'],
   ['work', 'Work Experience'],
   ['education', 'My Education'],

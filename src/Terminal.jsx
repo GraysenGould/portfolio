@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Help from './commands/help.jsx'
 import About from './commands/about.jsx'
+import Contact from './commands/contact.jsx'
 import News from './commands/news.jsx'
 import Experience from './commands/experience.jsx'
 import Education from './commands/education.jsx'
@@ -17,6 +18,7 @@ const COMMANDS = {
   help: <Help />,
   welcome: <Welcome />,
   about: <About />,
+  contact: <Contact />,
   news: <News />,
   work: <Experience />,
   education: <Education />,
@@ -30,7 +32,7 @@ const COMMANDS = {
 
 const PROMPT_USER = 'visitor'
 const PROMPT_HOST = 'graysens-portfolio'
-const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal']
+const STARTUP_COMMANDS = ['welcome', 'about', 'contact', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal']
 
 function Prompt() {
   return (
@@ -45,9 +47,11 @@ function Prompt() {
 
 const startup = [
   { type: 'banner', content: null },
+  { type: 'rule' },
   ...STARTUP_COMMANDS.flatMap(cmd => [
     { type: 'input', content: cmd },
     { type: 'output', content: COMMANDS[cmd] },
+    { type: 'rule' },
   ]),
   { type: 'hint', content: null },
 ]
@@ -99,6 +103,7 @@ export default function Terminal() {
 
     setHistory(prev => [
       ...prev,
+      { type: 'rule' },
       inputEntry,
       ...(outputEntry ? [outputEntry] : []),
     ])
@@ -159,6 +164,9 @@ export default function Terminal() {
               </div>
             </div>
           )
+        }
+        if (entry.type === 'rule') {
+          return <div key={i} className="rule" />
         }
         if (entry.type === 'hint') {
           return (

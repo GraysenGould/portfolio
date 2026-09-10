@@ -12,6 +12,8 @@
   --punct: #8B98AC;
   --ascii: #5A6678;
   --error: #e06c75;
+  --red: #e06c75;
+  --white: #ffffff;
   --font: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas, monospace;
 }
 
@@ -62,6 +64,14 @@ a:hover {
 .hint {
   color: var(--text);
   margin-bottom: 1.5rem;
+}
+
+/* Section rule */
+.rule {
+  height: 1px;
+  background: var(--punct);
+  opacity: 0.35;
+  margin: 2rem 0;
 }
 
 /* Prompt */
@@ -146,6 +156,27 @@ a:hover {
   margin-bottom: 1.5rem;
 }
 
+.entry-logo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.entry-logo {
+  width: 130px;
+  flex-shrink: 0;
+  font-family: var(--font);
+  font-size: 0.5rem;
+  line-height: 1.05;
+  color: var(--ascii);
+  margin: 0;
+}
+
+.entry-body {
+  flex: 1;
+  min-width: 0;
+}
+
 .entry:last-child {
   margin-bottom: 0;
 }
@@ -201,6 +232,14 @@ a:hover {
 
 .accent {
   color: var(--mint);
+}
+
+.red {
+  color: var(--red);
+}
+
+.white {
+  color: var(--white);
 }
 
 .placeholder-text {
