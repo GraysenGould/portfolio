@@ -251,6 +251,16 @@ a:hover {
   margin-bottom: 0;
 }
 
+.about-text {
+  max-width: 50%;
+}
+
+@media (max-width: 600px) {
+  .about-text {
+    max-width: 100%;
+  }
+}
+
 .accent::before,
 .accent::after {
   content: '`';
