@@ -294,9 +294,16 @@ a:hover {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  align-items: center;
+  align-items: flex-start;
   gap: 300px;
   overflow-x: auto;
+}
+
+.welcome-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-shrink: 0;
 }
 
 .welcome-name {

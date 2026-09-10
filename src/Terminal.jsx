@@ -12,7 +12,6 @@ import Activities from './commands/activities.jsx'
 import Personal from './commands/personal.jsx'
 import Nvidia from './commands/nvidia.jsx'
 import Welcome from './commands/welcome.jsx'
-import { contact } from './content.js'
 
 const COMMANDS = {
   help: <Help />,
@@ -32,7 +31,7 @@ const COMMANDS = {
 
 const PROMPT_USER = 'visitor'
 const PROMPT_HOST = 'graysens-portfolio'
-const STARTUP_COMMANDS = ['welcome', 'about', 'contact', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal']
+const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal']
 
 function Prompt() {
   return (
@@ -46,8 +45,6 @@ function Prompt() {
 }
 
 const startup = [
-  { type: 'banner', content: null },
-  { type: 'rule' },
   ...STARTUP_COMMANDS.flatMap(cmd => [
     { type: 'input', content: cmd },
     { type: 'output', content: COMMANDS[cmd] },
@@ -152,19 +149,6 @@ export default function Terminal() {
   return (
     <div className="terminal" onClick={focusInput}>
       {history.map((entry, i) => {
-        if (entry.type === 'banner') {
-          return (
-            <div key={i} className="banner">
-              <div className="banner-contact">
-                <a href={`mailto:${contact.email}`} className="contact-link">{contact.email}</a>
-                <span className="dim"> · </span>
-                <a href={`https://${contact.linkedin}`} target="_blank" rel="noreferrer" className="contact-link">{contact.linkedin}</a>
-                <span className="dim"> · </span>
-                <a href={`https://${contact.github}`} target="_blank" rel="noreferrer" className="contact-link">{contact.github}</a>
-              </div>
-            </div>
-          )
-        }
         if (entry.type === 'rule') {
           return <div key={i} className="rule" />
         }
