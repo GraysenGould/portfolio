@@ -18,7 +18,7 @@ export default function Help() {
           </div>
         ))}
       </div>
-      <p className="help-hint">Type one of the above to view. For eg. <span className="accent">education</span></p>
+      <p className="help-hint">type one of the above to view, e.g. <span className="accent">education</span></p>
     </div>
   )
 }

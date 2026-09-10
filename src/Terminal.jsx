@@ -20,14 +20,26 @@ const COMMANDS = {
   welcome: <Welcome />,
 }
 
-const PROMPT = '[graysen@portfolio ~]$ '
+const PROMPT_USER = 'visitor'
+const PROMPT_HOST = 'graysens-portfolio'
 const BOOT_COMMAND = 'welcome'
+
+function Prompt() {
+  return (
+    <span className="prompt">
+      <span className="prompt-user">{PROMPT_USER}</span>
+      <span className="prompt-punct">@</span>
+      <span className="prompt-host">{PROMPT_HOST}</span>
+      <span className="prompt-punct">:~$ </span>
+    </span>
+  )
+}
 
 const startup = [
   { type: 'banner', content: null },
   { type: 'input', content: BOOT_COMMAND },
   { type: 'output', content: COMMANDS[BOOT_COMMAND] },
-  { type: 'hint', content: 'type help to start' },
+  { type: 'hint', content: null },
 ]
 
 export default function Terminal() {
@@ -70,10 +82,7 @@ export default function Terminal() {
     } else if (COMMANDS[cmd]) {
       outputEntry = { type: 'output', content: COMMANDS[cmd] }
     } else {
-      outputEntry = {
-        type: 'error',
-        content: `command not found: ${cmd}. Try 'help'.`,
-      }
+      outputEntry = { type: 'error', content: cmd }
     }
 
     setHistory(prev => [
@@ -127,7 +136,6 @@ export default function Terminal() {
         if (entry.type === 'banner') {
           return (
             <div key={i} className="banner">
-              <div className="banner-name">[graysen@portfolio ~]$</div>
               <div className="banner-contact">
                 <a href={`mailto:${contact.email}`} className="contact-link">{contact.email}</a>
                 <span className="dim"> · </span>
@@ -139,12 +147,16 @@ export default function Terminal() {
           )
         }
         if (entry.type === 'hint') {
-          return <div key={i} className="hint">{entry.content}</div>
+          return (
+            <div key={i} className="hint">
+              for a list of available commands, type <span className="accent">help</span>.
+            </div>
+          )
         }
         if (entry.type === 'input') {
           return (
             <div key={i} className="history-input">
-              <span className="prompt">{PROMPT}</span>
+              <Prompt />
               <span>{entry.content}</span>
             </div>
           )
@@ -157,7 +169,11 @@ export default function Terminal() {
           )
         }
         if (entry.type === 'error') {
-          return <div key={i} className="error-line">{entry.content}</div>
+          return (
+            <div key={i} className="error-line">
+              command not found: <span className="accent">{entry.content}</span>. try <span className="accent">help</span>.
+            </div>
+          )
         }
         if (entry.type === 'output') {
           return <div key={i}>{entry.content}</div>
@@ -166,10 +182,12 @@ export default function Terminal() {
       })}
 
       <div className="input-line">
-        <span className="prompt">{PROMPT}</span>
+        <Prompt />
+        <span className="typed-text">{inputValue}</span>
+        <span className="cursor-block" aria-hidden="true">▌</span>
         <input
           ref={inputRef}
-          className="terminal-input"
+          className="terminal-input-hidden"
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
