@@ -45,10 +45,10 @@ function Prompt() {
   )
 }
 
-const startup = STARTUP_COMMANDS.flatMap(cmd => [
+const startup = STARTUP_COMMANDS.flatMap((cmd, i) => [
+  ...(i > 0 ? [{ type: 'rule' }] : []),
   { type: 'input', content: cmd },
   { type: 'output', content: COMMANDS[cmd] },
-  { type: 'rule' },
 ])
 
 export default function Terminal() {
@@ -208,6 +208,7 @@ export default function Terminal() {
         return null
       })}
 
+      {history.length > 0 && <div className="rule" />}
       <div className="input-line">
         <Prompt />
         <span className="typed-text">{inputValue}</span>
