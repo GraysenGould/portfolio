@@ -166,7 +166,16 @@ export default function Terminal() {
   return (
     <>
       <NavBar onSelect={navigate} disabled={navBusy} />
-      <div className="terminal" onClick={focusInput}>
+      <div className="terminal-window">
+        <div className="terminal-titlebar">
+          <span className="traffic-lights">
+            <span className="traffic-light traffic-light-red" />
+            <span className="traffic-light traffic-light-yellow" />
+            <span className="traffic-light traffic-light-green" />
+          </span>
+          <span className="terminal-titlebar-label">{PROMPT_USER}@{PROMPT_HOST} — bash</span>
+        </div>
+        <div className="terminal" onClick={focusInput}>
       {history.map((entry, i) => {
         if (entry.type === 'rule') {
           return <div key={i} className="rule" />
@@ -217,6 +226,7 @@ export default function Terminal() {
         />
       </div>
       <div ref={bottomRef} />
+        </div>
       </div>
     </>
   )

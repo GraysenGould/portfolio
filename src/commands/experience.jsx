@@ -1,9 +1,17 @@
 import { experience } from '../content.js'
-import { ttu_logo } from './welcome.jsx'
+import { ttu_logo, nvidia_logo, tyler_tech_logo } from '../logos.jsx'
 import { renderColoredArt } from '../coloredArt.jsx'
 
 const LOGOS = {
   'Texas Tech Data-Intensive Scalable Computing Laboratory': ttu_logo,
+  'NVIDIA': nvidia_logo,
+  'Tyler Technologies': tyler_tech_logo,
+}
+
+const LOGO_CLASS = {
+  'NVIDIA': 'entry-logo-nvidia',
+  'Texas Tech Data-Intensive Scalable Computing Laboratory': 'entry-logo-ttu',
+  'Tyler Technologies': 'entry-logo-tyler',
 }
 
 export default function Experience() {
@@ -12,7 +20,7 @@ export default function Experience() {
       {experience.map((job, i) => (
         <div key={i} className="entry">
           <div className="entry-logo-row">
-            <pre className="entry-logo">{LOGOS[job.company] ? renderColoredArt(LOGOS[job.company]) : ''}</pre>
+            <pre className={`entry-logo ${LOGO_CLASS[job.company] ?? ''}`}>{LOGOS[job.company] ? renderColoredArt(LOGOS[job.company]) : ''}</pre>
             <div className="entry-body">
               <div className="entry-header">
                 <span className="entry-title">{job.company}</span>

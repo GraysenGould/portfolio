@@ -2,18 +2,17 @@ const SECTIONS = ['welcome', 'about', 'contact', 'news', 'work', 'education', 'r
 
 export default function NavBar({ onSelect, disabled }) {
   return (
-    <nav className="nav-bar">
+    <nav className="menu-bar">
+      <span className="menu-bar-brand">graysens-portfolio</span>
       {SECTIONS.map(section => (
         <button
           key={section}
           type="button"
-          className="nav-link"
+          className="menu-bar-item"
           disabled={disabled}
           onClick={() => onSelect(section)}
         >
-          <span className="nav-bracket">[</span>
           {section}
-          <span className="nav-bracket">]</span>
         </button>
       ))}
     </nav>

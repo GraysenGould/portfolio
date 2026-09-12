@@ -1,12 +1,12 @@
 import { education } from '../content.js'
-import { ttu_logo } from './welcome.jsx'
+import { ttu_logo } from '../logos.jsx'
 import { renderColoredArt } from '../coloredArt.jsx'
 
 export default function Education() {
   return (
     <div className="output-block">
       <div className="entry-logo-row">
-        <pre className="entry-logo">{renderColoredArt(ttu_logo)}</pre>
+        <pre className="entry-logo entry-logo-ttu">{renderColoredArt(ttu_logo)}</pre>
         <div className="entry-body">
           <div className="entry-header">
             <span className="entry-title">{education.school}</span>

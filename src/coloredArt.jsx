@@ -1,13 +1,14 @@
 // Parses inline color markup inside ASCII-art strings, e.g.:
 //   `{r}this part is red{/r} and {w}this part is white{/w}`
-// Supported tags: {r}=red, {w}=white, {m}=mint, {a}=amber
+// Supported tags: {r}=red, {w}=white, {m}=mint, {a}=amber, {g}=nvidia green,
+// {sy}=sycamore, {dn}=denim
 // Tags can wrap any span of text, including across multiple lines.
 export function renderColoredArt(str) {
   const parts = str.split(/(\{\/?[a-z]+\})/g)
   const nodes = []
   let currentClass = null
 
-  const classFor = { r: 'red', w: 'white', m: 'mint-text', a: 'amber-text' }
+  const classFor = { r: 'red', w: 'white', m: 'mint-text', a: 'amber-text', g: 'nvidia-green', sy: 'sycamore-text', dn: 'denim-text' }
 
   for (const part of parts) {
     const openMatch = part.match(/^\{([a-z]+)\}$/)
