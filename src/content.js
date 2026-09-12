@@ -22,7 +22,7 @@ export const experience = [
     company: 'NVIDIA',
     location: 'Santa Clara, CA',
     role: 'DevOps Intern — CUDA Math Libraries',
-    dates: 'May 2026 – Present',
+    dates: 'May 2026 – Aug. 2026',
     bullets: [
       'Designed and built an infrastructure-less data delivery system for 1TB+ of test data, replacing ad-hoc sync pipelines',
       'Wrote a cross-platform Python tool to deliver test data to Windows and Linux platforms on SLURM and Kubernetes',
@@ -35,7 +35,7 @@ export const experience = [
     company: 'Texas Tech Data-Intensive Scalable Computing Laboratory',
     location: 'Lubbock, TX',
     role: 'Research Assistant',
-    dates: 'Sep. 2025 – May 2026',
+    dates: 'Sep. 2025 – Present',
     bullets: [
       'Contributed to and maintained 80+ automated C and Bash tests in Linux, ensuring OpenSHMEM v1.6 compliance',
       'Optimized RaiderSTREAM benchmark initialization, reducing overall benchmark startup time by over 50%',
