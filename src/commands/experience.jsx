@@ -1,15 +1,17 @@
 import { experience } from '../content.js'
-import { ttu_logo, nvidia_logo } from '../logos.jsx'
+import { ttu_logo, nvidia_logo, tyler_tech_logo } from '../logos.jsx'
 import { renderColoredArt } from '../coloredArt.jsx'
 
 const LOGOS = {
   'Texas Tech Data-Intensive Scalable Computing Laboratory': ttu_logo,
   'NVIDIA': nvidia_logo,
+  'Tyler Technologies': tyler_tech_logo,
 }
 
 const LOGO_CLASS = {
   'NVIDIA': 'entry-logo-nvidia',
   'Texas Tech Data-Intensive Scalable Computing Laboratory': 'entry-logo-ttu',
+  'Tyler Technologies': 'entry-logo-tyler',
 }
 
 export default function Experience() {

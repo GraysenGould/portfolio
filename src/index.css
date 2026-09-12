@@ -14,6 +14,8 @@
   --error: #e06c75;
   --red: #e06c75;
   --white: #ffffff;
+  --sycamore: #909B48;
+  --denim: #1278C0;
   --font: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas, monospace;
 }
 
@@ -62,11 +64,14 @@ a:hover {
 
 .menu-bar-brand {
   font-weight: 600;
+  line-height: 1;
   color: #1d1d1f;
   margin-right: 0.5rem;
 }
 
 .menu-bar-item {
+  display: inline-flex;
+  align-items: center;
   background: none;
   border: none;
   padding: 0.2rem 0.5rem;
@@ -74,6 +79,7 @@ a:hover {
   font-family: inherit;
   font-size: inherit;
   font-weight: 400;
+  line-height: 1;
   color: #1d1d1f;
   cursor: pointer;
   text-transform: capitalize;
@@ -162,7 +168,7 @@ a:hover {
   position: relative;
   width: 100%;
   margin: 0;
-  padding: 1.5rem 1.5rem 4rem;
+  padding: 0 1.5rem 4rem;
   cursor: text;
 }
 
@@ -254,6 +260,10 @@ a:hover {
   color: var(--punct);
 }
 
+.terminal > .history-input:first-child {
+  margin-top: 0;
+}
+
 .error-line {
   color: var(--error);
   margin-top: 0.5rem;
@@ -304,6 +314,15 @@ a:hover {
    right so the two logos' centers line up. */
 .entry-logo-ttu {
   margin-left: 9px;
+}
+
+/* Tyler mark is ~49 chars wide and 22 lines tall, wider than either other
+   logo, so it needs its own smaller font-size to fit the fixed column. */
+.entry-logo-tyler {
+  padding-top: 0.3rem;
+  margin-left: 2px;
+  font-size: 0.25rem;
+  line-height: 1.1;
 }
 
 .entry-body {
@@ -386,6 +405,14 @@ a:hover {
 
 .nvidia-green {
   color: #76b900;
+}
+
+.sycamore-text {
+  color: var(--sycamore);
+}
+
+.denim-text {
+  color: var(--denim);
 }
 
 .placeholder-text {
@@ -519,7 +546,7 @@ a:hover {
   }
 
   .terminal {
-    padding: 1rem 1rem 3rem;
+    padding: 0 1rem 3rem;
     font-size: 14px;
   }
 
