@@ -7,7 +7,7 @@ export function renderColoredArt(str) {
   const nodes = []
   let currentClass = null
 
-  const classFor = { r: 'red', w: 'white', m: 'mint-text', a: 'amber-text' }
+  const classFor = { r: 'red', w: 'white', m: 'mint-text', a: 'amber-text', g: 'nvidia-green' }
 
   for (const part of parts) {
     const openMatch = part.match(/^\{([a-z]+)\}$/)
