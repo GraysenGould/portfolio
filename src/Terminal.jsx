@@ -13,6 +13,7 @@ import Personal from './commands/personal.jsx'
 import Nvidia from './commands/nvidia.jsx'
 import Welcome from './commands/welcome.jsx'
 import NavBar from './NavBar.jsx'
+import { HOME_PATH, resolvePath, getNode, displayPath, baseName } from './filesystem.js'
 
 const COMMANDS = {
   help: <Help />,
@@ -34,13 +35,13 @@ const PROMPT_USER = 'visitor'
 const PROMPT_HOST = 'graysens-portfolio'
 const STARTUP_COMMANDS = ['welcome', 'about', 'news', 'work', 'education', 'research', 'projects', 'skills', 'misc', 'personal', 'help']
 
-function Prompt() {
+function Prompt({ cwd }) {
   return (
     <span className="prompt">
       <span className="prompt-user">{PROMPT_USER}</span>
       <span className="prompt-punct">@</span>
       <span className="prompt-host">{PROMPT_HOST}</span>
-      <span className="prompt-punct">:~$ </span>
+      <span className="prompt-punct">:{displayPath(cwd)}$ </span>
     </span>
   )
 }
@@ -60,6 +61,7 @@ export default function Terminal() {
   const bottomRef = useRef(null)
   const [scrollTick, setScrollTick] = useState(0)
   const [navBusy, setNavBusy] = useState(false)
+  const [cwd, setCwd] = useState(HOME_PATH)
 
   useEffect(() => {
     if (scrollTick === 0) return
@@ -88,9 +90,55 @@ export default function Terminal() {
       return
     }
 
+    const argv = cmd.split(/\s+/).filter(Boolean)
+    const base = argv[0]
+
     let outputEntry
     if (cmd === '') {
       outputEntry = null
+    } else if (base === 'pwd') {
+      outputEntry = { type: 'text', content: cwd }
+    } else if (base === 'cd') {
+      const target = argv[1]
+      const path = !target || target === '~' ? HOME_PATH : resolvePath(cwd, target)
+      const node = getNode(path)
+      if (!node) {
+        outputEntry = { type: 'fs-error', content: `cd: no such file or directory: ${target}` }
+      } else if (node.type !== 'dir') {
+        outputEntry = { type: 'fs-error', content: `cd: not a directory: ${target}` }
+      } else {
+        setCwd(path)
+        outputEntry = null
+      }
+    } else if (base === 'ls') {
+      const target = argv[1]
+      const path = target ? resolvePath(cwd, target) : cwd
+      const node = getNode(path)
+      if (!node) {
+        outputEntry = { type: 'fs-error', content: `ls: cannot access '${target}': No such file or directory` }
+      } else if (node.type === 'file') {
+        outputEntry = { type: 'text', content: baseName(path) }
+      } else {
+        const names = Object.entries(node.children)
+          .map(([name, child]) => (child.type === 'dir' ? `${name}/` : name))
+          .sort()
+        outputEntry = { type: 'text', content: names.join('  ') }
+      }
+    } else if (base === 'cat') {
+      const target = argv[1]
+      if (!target) {
+        outputEntry = { type: 'fs-error', content: 'cat: missing operand' }
+      } else {
+        const path = resolvePath(cwd, target)
+        const node = getNode(path)
+        if (!node) {
+          outputEntry = { type: 'fs-error', content: `cat: ${target}: No such file or directory` }
+        } else if (node.type === 'dir') {
+          outputEntry = { type: 'fs-error', content: `cat: ${target}: Is a directory` }
+        } else {
+          outputEntry = { type: 'output', content: COMMANDS[node.command] }
+        }
+      }
     } else if (COMMANDS[cmd]) {
       outputEntry = { type: 'output', content: COMMANDS[cmd] }
     } else {
@@ -183,7 +231,7 @@ export default function Terminal() {
         if (entry.type === 'input') {
           return (
             <div key={i} className="history-input">
-              <Prompt />
+              <Prompt cwd={cwd} />
               <span>{entry.content}</span>
             </div>
           )
@@ -202,6 +250,20 @@ export default function Terminal() {
             </div>
           )
         }
+        if (entry.type === 'fs-error') {
+          return (
+            <div key={i} className="error-line">
+              {entry.content}
+            </div>
+          )
+        }
+        if (entry.type === 'text') {
+          return (
+            <div key={i} className="fs-text">
+              {entry.content}
+            </div>
+          )
+        }
         if (entry.type === 'output') {
           return <div key={i}>{entry.content}</div>
         }
@@ -210,7 +272,7 @@ export default function Terminal() {
 
       {history.length > 0 && <div className="rule" />}
       <div className="input-line">
-        <Prompt />
+        <Prompt cwd={cwd} />
         <span className="typed-text">{inputValue}</span>
         <span className="cursor-block" aria-hidden="true">▌</span>
         <input

@@ -270,6 +270,11 @@ a:hover {
   margin-bottom: 1rem;
 }
 
+.fs-text {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .tab-matches {
   color: var(--mint);
   margin-top: 0.25rem;
